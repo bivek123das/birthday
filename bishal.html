@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, Bishal!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(to bottom, #ffe29f, #ffa99f);
+      color: #4a4a4a;
+      padding: 20px;
+      overflow: hidden;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #ff6f61;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    .button {
+      margin-top: 20px;
+      display: inline-block;
+      background-color: #ff6f61;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #ff3b2f;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+      .button {
+        font-size: 0.9rem;
+        padding: 10px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      p {
+        font-size: 0.9rem;
+      }
+      .button {
+        font-size: 0.8rem;
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Happy Birthday, Bishal Modak! 🎂</h1>
+  <p>Wishing you a day filled with love, laughter, and all the things that bring you joy.</p>
+  <p>May this year bring amazing adventures and countless blessings. 🥳</p>
+  <button class="button" onclick="startParty()">Click to Celebrate!</button>
+
+  <canvas id="confetti"></canvas>
+
+  <!-- YouTube Player API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    // Initialize YouTube Player
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('yt-player', {
+        videoId: '2du6HVW28aw', // YouTube video ID for "Happy Birthday"
+        playerVars: {
+          autoplay: 0,
+          controls: 0,
+          loop: 1,
+          playlist: '2du6HVW28aw',
+        },
+        events: {
+          onReady: () => console.log('YouTube Player is ready!'),
+        },
+      });
+    }
+
+    // Confetti Effect
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    function createParticle() {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 10 + 5,
+        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+        velocityX: Math.random() * 4 - 2,
+        velocityY: Math.random() * 4 - 2,
+        opacity: Math.random(),
+      };
+    }
+
+    function updateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, i) => {
+        p.x += p.velocityX;
+        p.y += p.velocityY;
+
+        if (p.x < 0 || p.x > canvas.width || p.y < 0 || p.y > canvas.height) {
+          particles[i] = createParticle();
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.opacity;
+        ctx.fill();
+      });
+      requestAnimationFrame(updateParticles);
+    }
+
+    function startParty() {
+      player.playVideo(); // Play YouTube audio
+      particles = Array.from({ length: 100 }, createParticle);
+      updateParticles();
+    }
+  </script>
+
+  <!-- Hidden YouTube Player -->
+  <div id="yt-player" style="display: none;"></div>
+</body>
+</html>
